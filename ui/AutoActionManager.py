@@ -10,6 +10,7 @@ from ui.ActionTableView import ActionTableView
 
 
 class AutoActionManager(QtWidgets.QWidget):
+    dataChanged = QtCore.Signal(dict)
 
     def __init__(self, parent=None):
         super(AutoActionManager, self).__init__(parent)
@@ -68,6 +69,7 @@ class AutoActionManager(QtWidgets.QWidget):
         self.action_model.insertRow(item())
 
     def run_action(self):
+        self.caller_btn.setDisabled(True)
         caller_timer = int(self.caller_timer_line_edit.text())
         action_list = self.action_model.source_data
         self.action_thread.set_action_list(action_list)
@@ -75,16 +77,15 @@ class AutoActionManager(QtWidgets.QWidget):
         self.action_thread.start()
 
     def show_result(self, data):
-        from pprint import pprint
-        pprint(data)
         self.activateWindow()
-        # self.setFocus()
+        self.dataChanged.emit(data)
 
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Escape:
             if self.action_thread.isRunning():
                 self.action_thread.terminate()
                 self.action_thread.wait(1)
+            self.caller_btn.setEnabled(True)
 
 
 if __name__ == '__main__':

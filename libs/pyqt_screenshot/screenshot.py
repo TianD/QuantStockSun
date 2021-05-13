@@ -481,7 +481,6 @@ class Screenshot(QGraphicsView):
         source.setTopLeft(QPoint(source.topLeft().x() * self.scale, source.topLeft().y() * self.scale))
         source.setBottomRight(QPoint(source.bottomRight().x() * self.scale, source.bottomRight().y() * self.scale))
         image = self.screenPixel.copy(source)
-        print(self.screenPixel)
 
         if clipboard:
             QGuiApplication.clipboard().setImage(image.toImage(), QClipboard.Clipboard)

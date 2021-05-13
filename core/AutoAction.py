@@ -2,10 +2,10 @@
 import tempfile
 from datetime import datetime
 
-import pandas as pd
 import pyautogui
 from PySide2 import QtGui, QtCore
 
+from core.format_table_data import format_table_data
 from core.ocr import get_file_content, get_aliyun_ocr_result
 from libs.pyqt_screenshot import constant
 from libs.pyqt_screenshot.screenshot import Screenshot
@@ -59,7 +59,6 @@ class ClickAction(AutoAction):
         self.__args = value
 
     def run(self):
-        print(self.args)
         x, y = self.args.split(',')
         args = {'x': int(x), 'y': int(y)}
         result = self.cmd(**args)
@@ -102,7 +101,6 @@ class OCRAction(AutoAction):
     def __init__(self):
         pos = Screenshot.take_screenshot_pos(constant.CLIPBOARD)
         self.__args = pos
-        print(self.__args)
 
     @property
     def args(self):
@@ -123,8 +121,7 @@ class OCRAction(AutoAction):
         img_path = '%s/%s.jpg' % (tempfile.gettempdir(), datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
         img.save(img_path)
         base64_data = get_file_content(img_path)
-        data = get_aliyun_ocr_result(base64_data)
-        print(data)
-        # data = pd.read_excel(xlsx_data)
+        res_data = get_aliyun_ocr_result(base64_data)
+        data = format_table_data(res_data)
 
         return {'img': data}
