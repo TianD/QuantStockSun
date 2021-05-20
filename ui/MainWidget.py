@@ -31,7 +31,7 @@ class MainWidget(QtWidgets.QWidget):
         main_layout.addWidget(self.result_table)
 
     def initDataBefore(self):
-        self.result_model = ResultTableModel(['ABC', 'EDF', 'Y GC', 'OBF'])
+        self.result_model = ResultTableModel()
         self.result_table.setModel(self.result_model)
 
     def bindFuncs(self):
@@ -43,6 +43,7 @@ class MainWidget(QtWidgets.QWidget):
     def add_row(self, data):
         new_data = data.get('img')
         pprint(new_data)
+        self.result_model.update_header_list(list(new_data.keys()))
         self.result_model.insertRow(new_data)
 
 

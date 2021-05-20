@@ -67,3 +67,8 @@ class ResultTableModel(QtCore.QAbstractTableModel):
         self.beginInsertRows(parent, first, first)
         self.source_data.append(value)
         self.endInsertRows()
+
+    def update_header_list(self, value):
+        self.beginResetModel()
+        self.header_list = value
+        self.endResetModel()

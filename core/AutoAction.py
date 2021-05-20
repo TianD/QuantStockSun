@@ -123,5 +123,4 @@ class OCRAction(AutoAction):
         base64_data = get_file_content(img_path)
         res_data = get_aliyun_ocr_result(base64_data)
         data = format_table_data(res_data)
-
         return {'img': data}

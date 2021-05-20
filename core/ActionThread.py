@@ -33,7 +33,12 @@ class ActionThread(QtCore.QThread):
             data = {'current_time': datetime.now()}
             for action in self.action_list:
                 result = action.run()
-                if result:
-                    data.update(result)
+                for key, value in result.items():
+                    if isinstance(value, dict):
+                        data.setdefault(key, {}).update(value)
+                    elif isinstance(value, list):
+                        data.setdefault(key, []).append(value)
+                    else:
+                        data.update({key: value})
             self.output.emit(data)
 
